@@ -1,0 +1,6 @@
+name: MyFirstPlugin
+main: ppodds.test.myfirstplugin.MyFirstPlugin
+version: 0.0.1
+commands:
+    jump:
+        description: jump higher!
