@@ -33,6 +33,7 @@ public class MyFirstPlugin extends JavaPlugin
 		//其實輸出正在開啟並無必要，Bukkit幫你用好了
 		getLogger().info("Hello Bukkit!!!");
 		getServer().getPluginManager().registerEvents(new PlayerJoin(), this);
+		getServer().getPluginManager().registerEvents(new EntityDamageByEntity(), this);
 	}
 
 	public void onDisable()
