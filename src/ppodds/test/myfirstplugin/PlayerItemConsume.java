@@ -17,28 +17,31 @@ public class PlayerItemConsume implements Listener
 		//以下判斷兩樣事情
 		//1. 物品名稱為回復藥水10%
 		//2. 物品是水瓶(藥水的材料那種)
-		if (e.getItem().getItemMeta().getDisplayName().equals("回復藥水10%") && e.getItem().getType().equals(Material.POTION))
+		if (e.getItem().hasItemMeta())
 		{
-			//宣告變數
-			//玩家的最大生命
-			double maxh = e.getPlayer().getMaxHealth();
-			//玩家的當前生命
-			double h = e.getPlayer().getHealth();
-			//需要增加的生命
-			double addh = maxh * 0.1;
-			//以下判斷
-			//當前生命+需要增加的生命 > 最大生命
-			if (h+addh > maxh)
+			if (e.getItem().getItemMeta().getDisplayName().equals("回復藥水10%") && e.getItem().getType().equals(Material.POTION))
 			{
-				//設定生命值到全滿
-				//(此處是為了避免生命值溢出(我也不知道會怎樣，求測試)
-				e.getPlayer().setHealth(maxh);
-			}
-			//否則
-			else
-			{
-				//設定生命為當前生命+需要增加的生命
-				e.getPlayer().setHealth(h+addh);
+				//宣告變數
+				//玩家的最大生命
+				double maxh = e.getPlayer().getMaxHealth();
+				//玩家的當前生命
+				double h = e.getPlayer().getHealth();
+				//需要增加的生命
+				double addh = maxh * 0.1;
+				//以下判斷
+				//當前生命+需要增加的生命 > 最大生命
+				if (h+addh > maxh)
+				{
+					//設定生命值到全滿
+					//(此處是為了避免生命值溢出(我也不知道會怎樣，求測試)
+					e.getPlayer().setHealth(maxh);
+				}
+				//否則
+				else
+				{
+					//設定生命為當前生命+需要增加的生命
+					e.getPlayer().setHealth(h+addh);
+				}
 			}
 		}
 	}

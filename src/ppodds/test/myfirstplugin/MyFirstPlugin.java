@@ -34,6 +34,7 @@ public class MyFirstPlugin extends JavaPlugin
 		getLogger().info("Hello Bukkit!!!");
 		getServer().getPluginManager().registerEvents(new PlayerJoin(), this);
 		getServer().getPluginManager().registerEvents(new EntityDamageByEntity(), this);
+		getServer().getPluginManager().registerEvents(new PlayerItemConsume(), this);
 	}
 
 	public void onDisable()
