@@ -1,7 +1,13 @@
 package ppodds.test.myfirstplugin;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Zombie;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 //↑class(類別)存放的套件
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
@@ -71,7 +77,36 @@ public class MyFirstPlugin extends JavaPlugin
 	    		p.addPotionEffect(new PotionEffect(PotionEffectType.JUMP , 100 , 2));
 	    	}
 	    }
-
+	    
+	    if (lable.equals("mob") && sender instanceof Player)
+	    {
+	    	//用條件判斷式判斷是否無參數length是用來取得陣列長度的
+	    	if (args.length == 0)
+	    	{
+	    		//由於已經確定sender一定是Player，所以可以不理警告進行強制轉型來操作
+	    		//p是名稱可以自由改，主要追求速度的話能短儘量短，但是如果多人共同開發的話太短會導致其他人看不懂喔!
+	    		Player p = (Player) sender;
+	    		//設定一隻殭屍
+	    		Zombie zm = (Zombie) p.getWorld().spawnEntity(p.getLocation(), EntityType.ZOMBIE);
+	    		//設定生命及最大生命至50心
+	    		zm.setMaxHealth(100);
+	    		zm.setHealth(100);
+	    		//設定裝備
+	    		ItemStack is = new ItemStack(Material.IRON_SWORD);
+	    		ItemMeta im = is.getItemMeta();
+	    		im.setDisplayName("巨劍");
+	    		is.setItemMeta(im);
+	    		zm.getEquipment().setHelmet(new ItemStack(Material.DIAMOND_HELMET));
+	    		zm.getEquipment().setChestplate(new ItemStack(Material.DIAMOND_CHESTPLATE));
+	    		zm.getEquipment().setLeggings(new ItemStack(Material.DIAMOND_LEGGINGS));
+	    		zm.getEquipment().setBoots(new ItemStack(Material.DIAMOND_BOOTS));
+	    		zm.getEquipment().setItemInMainHand(is);
+	    		
+	    		
+	    		
+	    	}
+	    }
+	    
 
 	    return false;
 	}
