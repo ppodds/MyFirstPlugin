@@ -1,5 +1,8 @@
 package ppodds.test.myfirstplugin;
+import org.bukkit.Bukkit;
+import org.bukkit.Effect;
 import org.bukkit.Material;
+import org.bukkit.Particle;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -77,7 +80,7 @@ public class MyFirstPlugin extends JavaPlugin
 	    		p.addPotionEffect(new PotionEffect(PotionEffectType.JUMP , 100 , 2));
 	    	}
 	    }
-	    
+	    else
 	    if (lable.equals("mob") && sender instanceof Player)
 	    {
 	    	//用條件判斷式判斷是否無參數length是用來取得陣列長度的
@@ -105,8 +108,39 @@ public class MyFirstPlugin extends JavaPlugin
 	    		
 	    		
 	    	}
+	    	
+
 	    }
-	    
+	    else
+	    if (lable.equals("explosion") && sender instanceof Player)
+	    {	
+	    	if (args.length == 0)
+	    	{
+	    		//由於已經確定sender一定是Player，所以可以不理警告進行強制轉型來操作
+	    		//p是名稱可以自由改，主要追求速度的話能短儘量短，但是如果多人共同開發的話太短會導致其他人看不懂喔!
+	    		Player p = (Player) sender;
+	    		//取得玩家的世界來創造粒子效果
+	    		//位置為玩家當前位置
+	    		//持續60tick
+	    		//種類為爆炸的粒子
+	    		p.getWorld().spawnParticle(Particle.EXPLOSION_NORMAL, p.getLocation(), 60);
+	    		//5秒以後執行以下
+	    		//最後一個參數是延遲時間，以Minecraft中的Tick為單位，20Tick為一秒
+	    		Bukkit.getScheduler().runTaskLater(this, new Runnable() {
+	    			public void run()
+	    			{
+	    				//取得玩家的世界來創造爆炸
+	    	    		//位置為玩家當前位置
+	    	    		//威力為100
+	    	    		//會產生火焰
+	    	    		p.getWorld().createExplosion(p.getLocation(), 100, true);
+	    			}
+	    		}, 100);
+	    		
+	    	}
+	    	
+	    	
+	    }
 
 	    return false;
 	}

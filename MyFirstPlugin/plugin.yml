@@ -6,3 +6,5 @@ commands:
         description: jump higher!
     mob:
         description: create a zimbie!
+    explosion:
+        description: create a explosion!
