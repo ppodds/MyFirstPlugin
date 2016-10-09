@@ -4,7 +4,7 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
 	<classpathentry kind="lib" path="D:/ppodds/plugin test/1.9.4/spigot-1.9.4.jar">
 		<attributes>
-			<attribute name="javadoc_location" value="file:/D:/ppodds/website/Spigot%201.9.4%20API/hub.spigotmc.org/javadocs/spigot/"/>
+			<attribute name="javadoc_location" value="https://hub.spigotmc.org/javadocs/spigot/"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="output" path="bin"/>

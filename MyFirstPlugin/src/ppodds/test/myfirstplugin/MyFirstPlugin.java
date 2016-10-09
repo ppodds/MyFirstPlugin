@@ -1,8 +1,13 @@
 package ppodds.test.myfirstplugin;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Effect;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
+import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -119,21 +124,40 @@ public class MyFirstPlugin extends JavaPlugin
 	    		//由於已經確定sender一定是Player，所以可以不理警告進行強制轉型來操作
 	    		//p是名稱可以自由改，主要追求速度的話能短儘量短，但是如果多人共同開發的話太短會導致其他人看不懂喔!
 	    		Player p = (Player) sender;
-	    		//取得玩家的世界來創造粒子效果
-	    		//位置為玩家當前位置
+	    		
+	    		
+	    		//這邊因為Eclipse分不出兩個getTargetBlock()的差異
+	    		//導致要宣告一個Set物件填進去
+	    		//依據原本的API，要忽略掉空氣只要輸出null就好了
+	    		
+	    		Set<Material> s = new HashSet<Material>();
+	    		s.add(Material.AIR);
+	    		
+	    		//取得玩家的箭頭的方塊座標(50格內)
+	    		//註:API有提到有些伺服器能限制最大範圍只能到100格
+	    		
+	    		Location l = p.getTargetBlock(s, 50).getLocation();
+	    		
+	    		//釋放粒子效果
+	    		
+	    		p.getWorld().spawnParticle(Particle.SMOKE_LARGE, l, 60);
+	 
+	    		
+	    		//位置為玩家的箭頭的方塊座標
 	    		//持續60tick
-	    		//種類為爆炸的粒子
-	    		p.getWorld().spawnParticle(Particle.EXPLOSION_NORMAL, p.getLocation(), 60);
+	    		//種類為煙的粒子
+	    		//剛好最近提摩做了粒子效果的翻譯，在此給上連結
+	    		//http://home.gamer.com.tw/creationDetail.php?sn=3347715
+	    		
 	    		//5秒以後執行以下
 	    		//最後一個參數是延遲時間，以Minecraft中的Tick為單位，20Tick為一秒
 	    		Bukkit.getScheduler().runTaskLater(this, new Runnable() {
 	    			public void run()
 	    			{
-	    				//取得玩家的世界來創造爆炸
-	    	    		//位置為玩家當前位置
+	    				//讓玩家的箭頭的方塊座標發生爆炸
 	    	    		//威力為100
 	    	    		//會產生火焰
-	    	    		p.getWorld().createExplosion(p.getLocation(), 100, true);
+	    	    		p.getWorld().createExplosion(l, 100, true);
 	    			}
 	    		}, 100);
 	    		
