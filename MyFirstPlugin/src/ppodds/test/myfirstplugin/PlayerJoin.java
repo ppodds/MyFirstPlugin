@@ -10,6 +10,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.meta.FireworkMeta;
 
+import ppodds.test.myfirstplugin.*;
 
 public class PlayerJoin implements Listener
 {
@@ -28,6 +29,12 @@ public class PlayerJoin implements Listener
 		fm.setPower(3);
 		//將Firework物件的Meta設定成已修改的Meta。
 		f.setFireworkMeta(fm);
+	
+		
+		//玩家登入時設定魔力量
+		MyFirstPlugin.mana.put(event.getPlayer().getName(), 100);
+		
+		
 	}
 
 

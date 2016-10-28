@@ -1,8 +1,11 @@
 package ppodds.test.myfirstplugin;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -25,11 +28,16 @@ import org.bukkit.potion.PotionEffectType;
 //補充:import可以使用萬用字元*來匯入該套件所有的class
 public class MyFirstPlugin extends JavaPlugin
 {
+	
 	// public宣告他是公用類別(權限最大)，想了解這方面要自己看書，這裡不講
 	// ↑因為我們寫的是Java插件，所以要繼承JavaPlugin(Bukkit的API)
 	// extends是Java的關鍵字，可以用來繼承類別。在Java中不能多重繼承
 	// 如果你沒繼承，API的很多功能不能用，就不能被Bukkit執行了
 
+	
+	public static Map<String,Integer> mana = new HashMap<String,Integer>();
+	
+	
 	public void onEnable()
 	{
 		//void是指這個方法不會有傳回值，有些方法可以傳值
@@ -117,6 +125,12 @@ public class MyFirstPlugin extends JavaPlugin
 
 	    }
 	    else
+	    if (lable.equals("mana") && sender instanceof Player && args.length == 0)
+	    {
+	    	//發送魔力量的訊息
+	    	sender.sendMessage("魔力剩餘: " + mana.get(sender.getName()));
+	    }
+	    else
 	    if (lable.equals("explosion") && sender instanceof Player)
 	    {	
 	    	if (args.length == 0)
@@ -125,45 +139,53 @@ public class MyFirstPlugin extends JavaPlugin
 	    		//p是名稱可以自由改，主要追求速度的話能短儘量短，但是如果多人共同開發的話太短會導致其他人看不懂喔!
 	    		Player p = (Player) sender;
 	    		
-	    		
-	    		//這邊因為Eclipse分不出兩個getTargetBlock()的差異
-	    		//導致要宣告一個Set物件填進去
-	    		//依據原本的API，要忽略掉空氣只要輸出null就好了
-	    		
-	    		Set<Material> s = new HashSet<Material>();
-	    		s.add(Material.AIR);
-	    		
-	    		//取得玩家的箭頭的方塊座標(50格內)
-	    		//註:API有提到有些伺服器能限制最大範圍只能到100格
-	    		
-	    		Location l = p.getTargetBlock(s, 50).getLocation();
-	    		
-	    		//釋放粒子效果
-	    		
-	    		p.getWorld().spawnParticle(Particle.SMOKE_LARGE, l, 60);
-	 
-	    		
-	    		//位置為玩家的箭頭的方塊座標
-	    		//持續60tick
-	    		//種類為煙的粒子
-	    		//剛好最近提摩做了粒子效果的翻譯，在此給上連結
-	    		//http://home.gamer.com.tw/creationDetail.php?sn=3347715
-	    		
-	    		//5秒以後執行以下
-	    		//最後一個參數是延遲時間，以Minecraft中的Tick為單位，20Tick為一秒
-	    		Bukkit.getScheduler().runTaskLater(this, new Runnable() {
-	    			public void run()
-	    			{
-	    				//讓玩家的箭頭的方塊座標發生爆炸
-	    	    		//威力為100
-	    	    		//會產生火焰
-	    	    		p.getWorld().createExplosion(l, 100, true);
-	    			}
-	    		}, 100);
-	    		
+	    		//設定魔力量為原本的魔力量-50
+	    		if (mana.get(p.getName()) >= 50)
+	    		{
+	    			mana.put(p.getName(), mana.get(p.getName()) - 50);
+
+	    			//這邊因為Eclipse分不出兩個getTargetBlock()的差異
+	    			//導致要宣告一個Set物件填進去
+	    			//依據原本的API，要忽略掉空氣只要輸出null就好了
+
+	    			Set<Material> s = new HashSet<Material>();
+	    			s.add(Material.AIR);
+
+	    			//取得玩家的箭頭的方塊座標(範圍為50 + (魔力量*0.5))
+	    			//註:API有提到有些伺服器能限制最大範圍只能到100格
+
+	    			Location l = p.getTargetBlock(s, (int) (50 + mana.get(sender.getName())*0.5)).getLocation();
+
+	    			//釋放粒子效果
+
+	    			p.getWorld().spawnParticle(Particle.SMOKE_LARGE, l, 60);
+
+
+	    			//位置為玩家的箭頭的方塊座標
+	    			//持續60tick
+	    			//種類為煙的粒子
+	    			//剛好最近提摩做了粒子效果的翻譯，在此給上連結
+	    			//http://home.gamer.com.tw/creationDetail.php?sn=3347715
+
+	    			//5秒以後執行以下
+	    			//最後一個參數是延遲時間，以Minecraft中的Tick為單位，20Tick為一秒
+	    			Bukkit.getScheduler().runTaskLater(this, new Runnable() {
+	    				public void run()
+	    				{
+	    					//讓玩家的箭頭的方塊座標發生爆炸
+	    					//威力公式為(30 + (魔力量*0.7))
+	    					//會產生火焰
+	    					p.getWorld().createExplosion(l, (float) (30 + mana.get(sender.getName())*0.7), true);
+	    				}
+	    			}, 100);
+
+	    		}
+	    		else
+	    		{
+	    			//發送警告
+	    			p.sendMessage(ChatColor.RED + "魔力不足，無法使用技能。");
+	    		}
 	    	}
-	    	
-	    	
 	    }
 
 	    return false;

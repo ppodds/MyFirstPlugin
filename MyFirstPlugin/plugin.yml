@@ -8,3 +8,5 @@ commands:
         description: create a zimbie!
     explosion:
         description: create a explosion!
+    mana:
+        description: watch your remain mana.
