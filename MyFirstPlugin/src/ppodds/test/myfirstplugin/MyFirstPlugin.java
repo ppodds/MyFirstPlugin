@@ -160,7 +160,9 @@ public class MyFirstPlugin extends JavaPlugin
 
 	    			p.getWorld().spawnParticle(Particle.SMOKE_LARGE, l, 60);
 
-
+	    			//先取得玩家施放技能時的位置
+	    			Location loc = p.getLocation();
+	    			
 	    			//位置為玩家的箭頭的方塊座標
 	    			//持續60tick
 	    			//種類為煙的粒子
@@ -172,10 +174,19 @@ public class MyFirstPlugin extends JavaPlugin
 	    			Bukkit.getScheduler().runTaskLater(this, new Runnable() {
 	    				public void run()
 	    				{
-	    					//讓玩家的箭頭的方塊座標發生爆炸
-	    					//威力公式為(30 + (魔力量*0.7))
-	    					//會產生火焰
-	    					p.getWorld().createExplosion(l, (float) (30 + mana.get(sender.getName())*0.7), true);
+	    					//如果玩家位置沒變執行以下區塊
+	    					if (p.getLocation().getX() == loc.getX() && p.getLocation().getY() == loc.getY() && p.getLocation().getZ() == loc.getZ())
+	    					{
+	    						//讓玩家的箭頭的方塊座標發生爆炸
+	    						//威力公式為(30 + (魔力量*0.7))
+	    						//會產生火焰
+	    						p.getWorld().createExplosion(l, (float) (30 + mana.get(sender.getName())*0.7), true);
+	    					}
+	    					else
+	    					{
+	    						//輸出訊息
+	    						p.sendMessage(ChatColor.RED + "技能詠唱失敗!");
+	    					}
 	    				}
 	    			}, 100);
 
