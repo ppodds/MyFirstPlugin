@@ -1,4 +1,6 @@
 package ppodds.test.myfirstplugin;
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -57,6 +59,19 @@ public class MyFirstPlugin extends JavaPlugin
 		getServer().getPluginManager().registerEvents(new PlayerJoin(), this);
 		getServer().getPluginManager().registerEvents(new EntityDamageByEntity(), this);
 		getServer().getPluginManager().registerEvents(new PlayerItemConsume(), this);
+		//先建立插件以及玩家資料夾
+		//檢查插件資料夾是否存在
+		if (!getDataFolder().exists())
+		{
+			//建立資料夾
+			getDataFolder().mkdir();
+			//插件資料夾不在，裡面的玩家資料夾也不在
+			//建立玩家資料夾
+			File playerDataFolder = new File(getDataFolder() + File.separator + "PlayerData");
+			//註:File.separator是分隔符號，Window是\，由於各種系統都不同，為了讓程式正常執行，建議使用這個，達成多作業系統支援	
+			//建立檔案
+			playerDataFolder.mkdir();
+		}
 	}
 
 	public void onDisable()
