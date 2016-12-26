@@ -91,7 +91,8 @@ public class MyFirstPlugin extends JavaPlugin
 		//利用條件判斷式來檢驗指令
 		//equals是用來比對字串是否完全一樣的
 		//instanceof這個關鍵字可以拿來比對前者物件是否屬於後者類別物件
-	    if (lable.equals("jump") && sender instanceof Player)
+		//用hasPermission來判斷玩家是否有該權限
+	    if (lable.equals("jump") && sender instanceof Player && sender.hasPermission("myfirstplugin.command.jump"))
 	    {
 	    	//用條件判斷式判斷是否無參數length是用來取得陣列長度的
 	    	if (args.length == 0)
@@ -109,7 +110,7 @@ public class MyFirstPlugin extends JavaPlugin
 	    	}
 	    }
 	    else
-	    if (lable.equals("mob") && sender instanceof Player)
+	    if (lable.equals("mob") && sender instanceof Player && sender.hasPermission("myfirstplugin.command.mob"))
 	    {
 	    	//用條件判斷式判斷是否無參數length是用來取得陣列長度的
 	    	if (args.length == 0)
@@ -140,13 +141,13 @@ public class MyFirstPlugin extends JavaPlugin
 
 	    }
 	    else
-	    if (lable.equals("mana") && sender instanceof Player && args.length == 0)
+	    if (lable.equals("mana") && sender instanceof Player && args.length == 0 && sender.hasPermission("myfirstplugin.command.mana"))
 	    {
 	    	//發送魔力量的訊息
 	    	sender.sendMessage("魔力剩餘: " + mana.get(sender.getName()));
 	    }
 	    else
-	    if (lable.equals("explosion") && sender instanceof Player)
+	    if (lable.equals("explosion") && sender instanceof Player && sender.hasPermission("myfirstplugin.command.explosion"))
 	    {	
 	    	if (args.length == 0)
 	    	{
